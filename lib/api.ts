@@ -4,6 +4,7 @@ export interface Product {
   price: number;
   stock_level: number;
   image_url: string;
+  images?: string[];
   category: string;
   description?: string;
   variants?: string[];
@@ -28,10 +29,10 @@ function extractDescription(desc: any, fallback: string): string {
   if (Array.isArray(desc)) {
     const validDesc = desc.find((d: any) => d.content && typeof d.content === 'string');
     if (validDesc) {
-      return validDesc.content.replace(/<[^>]*>?/gm, ' ').replace(/\s\s+/g, ' ').trim();
+      return validDesc.content.replace(/<img[^>]*>/gi, '').trim();
     }
   } else if (typeof desc === 'string') {
-    return desc.replace(/<[^>]*>?/gm, ' ').replace(/\s\s+/g, ' ').trim();
+    return desc.replace(/<img[^>]*>/gi, '').trim();
   }
   return fallback;
 }
@@ -53,10 +54,10 @@ export async function getProducts(): Promise<Product[]> {
     // Map Sellasist response to our frontend Product model
     return data.map(item => ({
       id: String(item.id),
-      title: item.name || 'Brak nazwy',
+      title: item.name || item.title || 'Brak nazwy',
       price: parseFloat(item.price || '0'),
       stock_level: parseInt(item.quantity || '0', 10),
-      image_url: item.image_url || 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&q=80&w=600',
+      image_url: item.image_url || item.images?.[0]?.original || 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&q=80&w=600',
       category: 'Inne', // Category isn't directly in the products list endpoint
       description: extractDescription(item.description, item.name || ''), 
     }));
@@ -80,14 +81,19 @@ export async function getProduct(id: string): Promise<Product | null> {
     const data = await res.json();
     const item = data.product || data;
     
+    const productImages = item.images && Array.isArray(item.images) 
+      ? item.images.map((img: any) => img.original || img.thumb).filter(Boolean)
+      : [];
+
     return {
       id: String(item.id),
-      title: item.name || 'Brak nazwy',
+      title: item.title || item.name || 'Brak nazwy',
       price: parseFloat(item.price || '0'),
       stock_level: parseInt(item.quantity || '0', 10),
-      image_url: item.image_url || 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&q=80&w=600',
+      image_url: productImages[0] || item.image_url || 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&q=80&w=600',
+      images: productImages,
       category: 'Inne',
-      description: extractDescription(item.description, item.name || ''),
+      description: extractDescription(item.description, item.title || item.name || ''),
     };
   } catch (error) {
     console.error('API Error:', error);

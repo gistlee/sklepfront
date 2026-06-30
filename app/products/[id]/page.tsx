@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getProduct, getProducts } from '@/lib/api';
 import AddToCartButton from '@/components/AddToCartButton';
+import ProductGallery from '@/components/ProductGallery';
 import { Package, Shield, Settings } from 'lucide-react';
 
 export const revalidate = 60; // ISR: Revalidate every 60 seconds
@@ -39,16 +39,9 @@ export default async function ProductPage({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         
-        {/* Product Image */}
-        <div className="relative aspect-square w-full bg-slate-50 rounded-3xl overflow-hidden border border-border">
-          <Image
-            src={product.image_url}
-            alt={product.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
+        {/* Product Image Gallery */}
+        <div className="w-full">
+          <ProductGallery images={product.images && product.images.length > 0 ? product.images : [product.image_url]} title={product.title} />
         </div>
 
         {/* Product Details */}
@@ -65,9 +58,10 @@ export default async function ProductPage({
             </div>
           </div>
 
-          <p className="text-slate-600 leading-relaxed mb-8">
-            {product.description}
-          </p>
+          <div 
+            className="text-slate-600 leading-relaxed mb-8 max-w-none [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-4 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mb-3 [&_strong]:font-bold [&_b]:font-bold"
+            dangerouslySetInnerHTML={{ __html: product.description || '' }}
+          />
 
           {/* Add to Cart Component (Client Side) */}
           <div className="mb-10">
