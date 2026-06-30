@@ -24,6 +24,18 @@ const getHeaders = () => ({
   'Content-Type': 'application/json'
 });
 
+function extractDescription(desc: any, fallback: string): string {
+  if (Array.isArray(desc)) {
+    const validDesc = desc.find((d: any) => d.content && typeof d.content === 'string');
+    if (validDesc) {
+      return validDesc.content.replace(/<[^>]*>?/gm, ' ').replace(/\s\s+/g, ' ').trim();
+    }
+  } else if (typeof desc === 'string') {
+    return desc.replace(/<[^>]*>?/gm, ' ').replace(/\s\s+/g, ' ').trim();
+  }
+  return fallback;
+}
+
 export async function getProducts(): Promise<Product[]> {
   try {
     const res = await fetch(`${API_URL}/products`, {
@@ -46,7 +58,7 @@ export async function getProducts(): Promise<Product[]> {
       stock_level: parseInt(item.quantity || '0', 10),
       image_url: item.image_url || 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&q=80&w=600',
       category: 'Inne', // Category isn't directly in the products list endpoint
-      description: item.name, // Fallback if description is missing
+      description: extractDescription(item.description, item.name || ''), 
     }));
   } catch (error) {
     console.error('API Error:', error);
@@ -66,7 +78,6 @@ export async function getProduct(id: string): Promise<Product | null> {
     }
 
     const data = await res.json();
-    // Assuming individual product might be nested under `product` or returned directly
     const item = data.product || data;
     
     return {
@@ -76,7 +87,7 @@ export async function getProduct(id: string): Promise<Product | null> {
       stock_level: parseInt(item.quantity || '0', 10),
       image_url: item.image_url || 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&q=80&w=600',
       category: 'Inne',
-      description: item.description || item.name || '',
+      description: extractDescription(item.description, item.name || ''),
     };
   } catch (error) {
     console.error('API Error:', error);
