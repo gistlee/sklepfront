@@ -28,6 +28,7 @@ export default async function ProductPage({
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Breadcrumbs */}
       <div className="text-sm text-slate-400 mb-8 flex items-center gap-2">
         <span>Home</span>
         <span>/</span>
@@ -38,7 +39,8 @@ export default async function ProductPage({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         
-        <div className="relative aspect-square w-full bg-slate-800 rounded-3xl overflow-hidden border border-slate-700/50">
+        {/* Product Image */}
+        <div className="relative aspect-square w-full bg-slate-50 rounded-3xl overflow-hidden border border-border">
           <Image
             src={product.image_url}
             alt={product.title}
@@ -49,40 +51,43 @@ export default async function ProductPage({
           />
         </div>
 
+        {/* Product Details */}
         <div className="flex flex-col">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">{product.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 leading-tight">{product.title}</h1>
           
           <div className="flex items-center gap-4 mb-6 pb-6 border-b border-border">
-            <span className="text-3xl font-bold text-white">${product.price.toFixed(2)}</span>
+            <span className="text-3xl font-bold text-slate-900">{product.price.toFixed(2)} zł</span>
             <div className={`px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-2 ${
-              product.stock_level > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
+              product.stock_level > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
             }`}>
-              <span className={`w-2 h-2 rounded-full ${product.stock_level > 0 ? 'bg-green-400' : 'bg-red-400'}`} />
+              <span className={`w-2 h-2 rounded-full ${product.stock_level > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
               {product.stock_level > 0 ? `${product.stock_level} In Stock` : 'Out of Stock'}
             </div>
           </div>
 
-          <p className="text-slate-300 leading-relaxed mb-8">
+          <p className="text-slate-600 leading-relaxed mb-8">
             {product.description}
           </p>
 
+          {/* Add to Cart Component (Client Side) */}
           <div className="mb-10">
             <AddToCartButton product={product} />
           </div>
 
+          {/* Value Props */}
           <div className="grid grid-cols-2 gap-4 mt-auto">
-            <div className="flex items-center gap-3 p-4 bg-slate-800/30 rounded-2xl border border-slate-700/50">
+            <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-border">
               <Package className="w-8 h-8 text-primary" />
               <div>
-                <p className="font-bold text-white text-sm">Free Shipping</p>
-                <p className="text-xs text-slate-400">On orders over $200</p>
+                <p className="font-bold text-slate-900 text-sm">Free Shipping</p>
+                <p className="text-xs text-slate-600">On orders over 200 zł</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 p-4 bg-slate-800/30 rounded-2xl border border-slate-700/50">
+            <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-border">
               <Shield className="w-8 h-8 text-primary" />
               <div>
-                <p className="font-bold text-white text-sm">2 Year Warranty</p>
-                <p className="text-xs text-slate-400">Full protection</p>
+                <p className="font-bold text-slate-900 text-sm">2 Year Warranty</p>
+                <p className="text-xs text-slate-600">Full protection</p>
               </div>
             </div>
           </div>
@@ -90,10 +95,11 @@ export default async function ProductPage({
         </div>
       </div>
 
+      {/* Technical Specifications Tab (Mock) */}
       <div className="mt-16 pt-16 border-t border-border">
         <div className="flex items-center gap-3 mb-8">
           <Settings className="w-6 h-6 text-primary" />
-          <h2 className="text-2xl font-bold text-white">Technical Specifications</h2>
+          <h2 className="text-2xl font-bold text-slate-900">Technical Specifications</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
@@ -105,9 +111,9 @@ export default async function ProductPage({
             { label: 'Certification', value: 'ISO 9001:2015, DOT Compliant' },
             { label: 'Country of Origin', value: 'Germany' },
           ].map((spec, i) => (
-            <div key={i} className="flex justify-between py-3 border-b border-slate-800">
-              <span className="text-slate-400">{spec.label}</span>
-              <span className="font-medium text-white text-right">{spec.value}</span>
+            <div key={i} className="flex justify-between py-3 border-b border-slate-200">
+              <span className="text-slate-600">{spec.label}</span>
+              <span className="font-medium text-slate-900 text-right">{spec.value}</span>
             </div>
           ))}
         </div>

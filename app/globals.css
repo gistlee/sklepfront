@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a; /* Slate 900 - Dark Blue */
-  --foreground: #ffffff;
-  --primary: #1d4ed8; /* Blue 700 */
-  --primary-hover: #1e40af; /* Blue 800 */
-  --border-color: #1e293b; /* Slate 800 */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --primary: #1d4ed8;
+  --primary-hover: #1e40af;
+  --border-color: #e2e8f0;
 }
 
 @theme inline {

@@ -34,9 +34,10 @@ export default function AddToCartButton({ product }: { product: Product }) {
 
   return (
     <div className="space-y-6">
+      {/* Variant Selector */}
       {product.variants && product.variants.length > 0 && (
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Select Variant</label>
+          <label className="block text-sm font-medium text-slate-700 mb-2">Select Variant</label>
           <div className="flex flex-wrap gap-2">
             {product.variants.map((variant) => (
               <button
@@ -45,7 +46,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   selectedVariant === variant 
                     ? 'bg-primary text-white border-2 border-primary' 
-                    : 'bg-slate-800 text-slate-300 border-2 border-transparent hover:bg-slate-700'
+                    : 'bg-slate-50 text-slate-700 border-2 border-transparent hover:bg-slate-100'
                 }`}
               >
                 {variant}
@@ -56,25 +57,27 @@ export default function AddToCartButton({ product }: { product: Product }) {
       )}
 
       <div className="flex items-end gap-4">
+        {/* Quantity */}
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Quantity</label>
+          <label className="block text-sm font-medium text-slate-700 mb-2">Quantity</label>
           <input 
             type="number" 
             min="1" 
             max={product.stock_level}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-            className="w-20 bg-slate-800 border border-slate-700 rounded-xl px-3 py-3 text-center text-white focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-20 bg-white border border-border rounded-xl px-3 py-3 text-center text-slate-900 focus:outline-none focus:ring-1 focus:ring-primary"
             disabled={isOutOfStock}
           />
         </div>
 
+        {/* Action Button */}
         <button
           onClick={handleAdd}
           disabled={isOutOfStock || added}
           className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-bold transition-all ${
             isOutOfStock 
-              ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
+              ? 'bg-slate-100 text-slate-500 cursor-not-allowed border border-border' 
               : added
                 ? 'bg-green-500 text-white'
                 : 'bg-primary hover:bg-primary-hover text-white hover:shadow-lg hover:shadow-primary/25'

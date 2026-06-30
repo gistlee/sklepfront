@@ -7,10 +7,12 @@ export default async function Home() {
   const products = await getProducts();
   const categories = await getCategories();
   
+  // Get top 4 bestsellers (mock logic)
   const bestsellers = products.slice(0, 4);
 
   return (
     <div className="flex flex-col gap-16 pb-16">
+      {/* Hero Section */}
       <section className="relative h-[600px] flex items-center">
         <div className="absolute inset-0 z-0">
           <Image
@@ -45,48 +47,50 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Trust Badges */}
       <section className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-800/50 p-8 rounded-2xl border border-slate-700/50">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white p-8 rounded-2xl border border-border shadow-sm">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-white">Certified Quality</h3>
-              <p className="text-sm text-slate-400">All products meet ISO standards</p>
+              <h3 className="font-bold text-slate-900">Certified Quality</h3>
+              <p className="text-sm text-slate-600">All products meet ISO standards</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <Truck className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-white">Fast Dispatch</h3>
-              <p className="text-sm text-slate-400">Same day shipping on orders before 2PM</p>
+              <h3 className="font-bold text-slate-900">Fast Dispatch</h3>
+              <p className="text-sm text-slate-600">Same day shipping on orders before 2PM</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
               <Clock className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-white">24/7 Support</h3>
-              <p className="text-sm text-slate-400">Technical assistance around the clock</p>
+              <h3 className="font-bold text-slate-900">24/7 Support</h3>
+              <p className="text-sm text-slate-600">Technical assistance around the clock</p>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Featured Categories */}
       <section className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-white">Featured Categories</h2>
+          <h2 className="text-3xl font-bold text-slate-900">Featured Categories</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {categories.map((category) => (
             <Link 
               key={category.id} 
               href={`/products?category=${category.slug}`}
-              className="group relative h-64 rounded-2xl overflow-hidden bg-slate-800 border border-slate-700/50 block"
+              className="group relative h-64 rounded-2xl overflow-hidden bg-slate-900 border border-border shadow-sm block"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent z-10" />
               <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors z-10" />
@@ -101,17 +105,18 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Bestsellers Grid */}
       <section className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-white">Bestselling Parts</h2>
+          <h2 className="text-3xl font-bold text-slate-900">Bestselling Parts</h2>
           <Link href="/products" className="text-primary hover:text-primary-hover font-medium flex items-center gap-1">
             View All <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {bestsellers.map((product) => (
-            <Link href={`/products/${product.id}`} key={product.id} className="group flex flex-col bg-slate-800/30 rounded-2xl border border-slate-700/50 overflow-hidden hover:border-primary/50 transition-colors">
-              <div className="relative aspect-square w-full bg-slate-800 overflow-hidden">
+            <Link href={`/products/${product.id}`} key={product.id} className="group flex flex-col bg-white rounded-2xl border border-border shadow-sm overflow-hidden hover:border-primary/50 transition-colors">
+              <div className="relative aspect-square w-full bg-slate-50 overflow-hidden">
                 <Image
                   src={product.image_url}
                   alt={product.title}
@@ -122,10 +127,10 @@ export default async function Home() {
               </div>
               <div className="p-5 flex flex-col flex-1">
                 <p className="text-xs text-primary font-medium mb-2 uppercase tracking-wider">{product.category}</p>
-                <h3 className="text-lg font-bold text-white mb-2 line-clamp-2">{product.title}</h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2">{product.title}</h3>
                 <div className="mt-auto flex items-center justify-between">
-                  <span className="text-xl font-bold text-white">${product.price.toFixed(2)}</span>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${product.stock_level > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+                  <span className="text-xl font-bold text-slate-900">{product.price.toFixed(2)} zł</span>
+                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${product.stock_level > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                     {product.stock_level > 0 ? 'In Stock' : 'Out of Stock'}
                   </span>
                 </div>
