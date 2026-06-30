@@ -8,7 +8,8 @@ export const revalidate = 60; // ISR: Revalidate every 60 seconds
 
 export async function generateStaticParams() {
   const products = await getProducts();
-  return products.map((product) => ({
+  // Limit static generation to first 50 items to prevent huge build times and API rate limiting
+  return products.slice(0, 50).map((product) => ({
     id: product.id,
   }));
 }
